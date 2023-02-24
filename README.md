@@ -4,7 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/plunkettscott/laravel-otel.svg?style=flat-square)](https://packagist.org/packages/plunkettscott/laravel-otel)
 ![GitHub Actions](https://github.com/plunkettscott/laravel-otel/actions/workflows/tests.yml/badge.svg)
 
-This package provides an OpenTelemetry integration for Laravel applications. It is based on the [OpenTelemetry PHP](https://github.com/opentelemetry/opentelemetry-php) project and
+This package provides an OpenTelemetry integration for Laravel applications. It is based on the [OpenTelemetry PHP](https://github.com/open-telemetry/opentelemetry-php) project and
 provides instrumentation for a number of Laravel components.
 
 ## Important Note
