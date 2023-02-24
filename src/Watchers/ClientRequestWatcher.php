@@ -18,7 +18,7 @@ class ClientRequestWatcher extends Watcher
     public ?string $optionsClass = ClientRequestWatcherOptions::class;
 
     /**
-     * @var array<SpanInterface>
+     * @var array<string, SpanInterface>
      */
     protected array $spans = [];
 
