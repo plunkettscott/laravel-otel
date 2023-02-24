@@ -28,11 +28,6 @@ class Otel
         static::registerWatchers($app);
     }
 
-    public static function tracerProvider(): TracerProviderInterface
-    {
-        return app(TracerProviderInterface::class);
-    }
-
     public static function captureUnhandledException(Throwable $exception): void
     {
         if (! config('otel.enabled')) {

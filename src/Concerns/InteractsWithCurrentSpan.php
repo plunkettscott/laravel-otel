@@ -4,41 +4,37 @@ namespace PlunkettScott\LaravelOpenTelemetry\Concerns;
 
 use Exception;
 use OpenTelemetry\SDK\Trace\Span;
+use PlunkettScott\LaravelOpenTelemetry\CurrentSpan;
 
 trait InteractsWithCurrentSpan
 {
     public static function traceId(): string
     {
-        return Span::getCurrent()->getContext()->getTraceId();
+        return CurrentSpan::get()->getContext()->getTraceId();
     }
 
     public static function spanId(): string
     {
-        return Span::getCurrent()->getContext()->getSpanId();
-    }
-
-    public static function traceState(): string
-    {
-        return Span::getCurrent()->getContext()->getTraceState();
+        return CurrentSpan::get()->getContext()->getSpanId();
     }
 
     public static function recordException(Exception $e): void
     {
-        Span::getCurrent()->recordException($e);
+        CurrentSpan::get()->recordException($e);
     }
 
     public static function setAttribute(string $key, $value): void
     {
-        Span::getCurrent()->setAttribute($key, $value);
+        CurrentSpan::get()->setAttribute($key, $value);
     }
 
-    public static function setAttributes(array $attributes): void
+    public static function setAttributes(iterable $attributes): void
     {
-        Span::getCurrent()->setAttributes($attributes);
+        CurrentSpan::get()->setAttributes($attributes);
     }
 
-    public static function addEvent(string $name, array $attributes = []): void
+    public static function addEvent(string $name, iterable $attributes = [], int|null $timestamp = null): void
     {
-        Span::getCurrent()->addEvent($name, $attributes);
+        CurrentSpan::get()->addEvent($name, $attributes, $timestamp);
     }
 }
