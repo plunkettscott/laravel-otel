@@ -24,7 +24,7 @@ This package is currently in development and contains the following Watchers:
 - [x] Database Queries
 - [x] Redis Commands
 - [ ] Queue Jobs
-- [ ] Cache Commands
+- [x] Cache Commands
 - [ ] View Rendering
 - [x] Exceptions
 - [x] Log Messages
@@ -57,7 +57,8 @@ php artisan otel:install
 ```
 
 3. Configure the methods in `app/Providers/OtelServiceProvider.php` to suit your needs
-4. Configure the watchers in `config/otel.php` to suit your needs
+
+4. Configure the watchers in `config/otel.php` to suit your needs. See the [documentation](https://oss.plunkett.dev/laravel-otel) for more information.
 
 ### Testing
 

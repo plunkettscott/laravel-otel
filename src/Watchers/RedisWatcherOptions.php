@@ -2,7 +2,7 @@
 
 namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 
-readonly class RedisWatcherOptions extends WatcherOptions
+final readonly class RedisWatcherOptions extends WatcherOptions
 {
     /**
      * @param  bool  $record_command Whether to record the Redis command as a span attribute.

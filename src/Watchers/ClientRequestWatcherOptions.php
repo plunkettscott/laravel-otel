@@ -2,7 +2,7 @@
 
 namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 
-readonly class ClientRequestWatcherOptions extends WatcherOptions
+final readonly class ClientRequestWatcherOptions extends WatcherOptions
 {
     /**
      * @param  bool  $record_errors When true, non-successful HTTP responses will be recorded as errors.

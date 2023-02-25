@@ -2,7 +2,7 @@
 
 namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 
-readonly class RequestWatcherOptions extends WatcherOptions
+final readonly class RequestWatcherOptions extends WatcherOptions
 {
     /**
      * @param  bool  $continue_trace Whether to continue the trace if a trace header is present in the request. If false, a new trace will be started for each request, even if the request is part of a trace.

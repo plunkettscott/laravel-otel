@@ -9,6 +9,7 @@ use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\SDK\Common\Time\ClockFactory;
 use OpenTelemetry\SemConv\TraceAttributes;
 use OpenTelemetry\SemConv\TraceAttributeValues;
+use PlunkettScott\LaravelOpenTelemetry\CurrentSpan;
 
 class RedisWatcher extends Watcher
 {
@@ -38,6 +39,10 @@ class RedisWatcher extends Watcher
     public function recordCommand(CommandExecuted $command): void
     {
         if ($this->shouldIgnore($command)) {
+            return;
+        }
+
+        if (! CurrentSpan::get()->isRecording()) {
             return;
         }
 

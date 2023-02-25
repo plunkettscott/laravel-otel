@@ -4,7 +4,7 @@ namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 
 use Psr\Log\LogLevel;
 
-readonly class LogWatcherOptions extends WatcherOptions
+final readonly class LogWatcherOptions extends WatcherOptions
 {
     /**
      * @param  string  $min_level The minimum log level to record. Any log messages below this level will not be recorded. Defaults to error.

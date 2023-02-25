@@ -65,13 +65,17 @@ class ClientRequestWatcher extends Watcher
      */
     public function recordConnectionFailed(ConnectionFailed $request): void
     {
-        $span = $this->spans[$this->createRequestComparisonHash($request->request)] ?? null;
+        $requestHash = $this->createRequestComparisonHash($request->request);
+
+        $span = $this->spans[$requestHash] ?? null;
         if (is_null($span)) {
             return;
         }
 
         $span->setStatus(StatusCode::STATUS_ERROR, 'Connection failed');
         $span->end();
+
+        unset($this->spans[$requestHash]);
     }
 
     /**
@@ -79,7 +83,9 @@ class ClientRequestWatcher extends Watcher
      */
     public function recordResponse(ResponseReceived $request): void
     {
-        $span = $this->spans[$this->createRequestComparisonHash($request->request)] ?? null;
+        $requestHash = $this->createRequestComparisonHash($request->request);
+
+        $span = $this->spans[$requestHash] ?? null;
         if (is_null($span)) {
             return;
         }
@@ -93,6 +99,8 @@ class ClientRequestWatcher extends Watcher
 
         $this->maybeRecordError($span, $request->response);
         $span->end();
+
+        unset($this->spans[$requestHash]);
     }
 
     private function createRequestComparisonHash(Request $request): string

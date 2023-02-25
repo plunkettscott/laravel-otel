@@ -86,6 +86,17 @@ return [
                 record_errors_except_statuses: [],
             ))->toArray(),
         ],
+
+        Watchers\CacheWatcher::class => [
+            'enabled' => env('OTEL_WATCHER_CACHE_ENABLED', true),
+            'options' => (new Watchers\CacheWatcherOptions(
+                record_cache_hit: true,
+                record_cache_miss: true,
+                record_cache_set: true,
+                record_cache_forget: true,
+                ignored: [],
+            ))->toArray(),
+        ],
     ],
 
     /*

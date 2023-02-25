@@ -68,4 +68,9 @@ class OtelApplicationServiceProvider extends ServiceProvider
             },
         );
     }
+
+    public function provides(): array
+    {
+        return [TracerProviderInterface::class];
+    }
 }
