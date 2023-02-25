@@ -3,7 +3,6 @@
 namespace PlunkettScott\LaravelOpenTelemetry\Concerns;
 
 use Exception;
-use OpenTelemetry\SDK\Trace\Span;
 use PlunkettScott\LaravelOpenTelemetry\CurrentSpan;
 
 trait InteractsWithCurrentSpan

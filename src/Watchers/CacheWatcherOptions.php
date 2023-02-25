@@ -5,11 +5,11 @@ namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 final readonly class CacheWatcherOptions extends WatcherOptions
 {
     /**
-     * @param bool $record_cache_hit When true, cache hits will be recorded as span events.
-     * @param bool $record_cache_miss When true, cache misses will be recorded as span events.
-     * @param bool $record_cache_set When true, cache sets will be recorded as span events.
-     * @param bool $record_cache_forget When true, cache forgets will be recorded as span events.
-     * @param array $ignored An array of cache keys to ignore. Accepts wildcards, e.g. 'users.*'.
+     * @param  bool  $record_cache_hit When true, cache hits will be recorded as span events.
+     * @param  bool  $record_cache_miss When true, cache misses will be recorded as span events.
+     * @param  bool  $record_cache_set When true, cache sets will be recorded as span events.
+     * @param  bool  $record_cache_forget When true, cache forgets will be recorded as span events.
+     * @param  array  $ignored An array of cache keys to ignore. Accepts wildcards, e.g. 'users.*'.
      */
     public function __construct(
         public bool $record_cache_hit = true,

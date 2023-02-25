@@ -41,7 +41,7 @@ class ClientRequestWatcher extends Watcher
         $processedUrl = $parsedUrl->get('scheme').'://'.$parsedUrl->get('host').$parsedUrl->get('path', '');
 
         if ($parsedUrl->has('query')) {
-            $processedUrl .= '?' . $parsedUrl->get('query');
+            $processedUrl .= '?'.$parsedUrl->get('query');
         }
 
         $span = $this->tracer->spanBuilder('http '.$request->request->method().' '.$request->request->url())

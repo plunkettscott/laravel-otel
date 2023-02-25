@@ -12,8 +12,6 @@ if (! function_exists('tracer')) {
      * Returns an OpenTelemetry tracer instance. If OpenTelemetry is not enabled,
      * a NoopTracer will be returned instead making this function safe to call
      * in all environments.
-     *
-     * @return TracerInterface
      */
     function tracer(): TracerInterface
     {
@@ -27,10 +25,10 @@ if (! function_exists('span')) {
      * be ended when the callable returns or throws an exception. The callable may
      * modify the active span by accepting a SpanInterface as its first argument.
      *
-     * @param string $name The name of the span
-     * @param callable $callable A callable that will be executed within the span context. The activated Span will be passed as the first argument.
-     * @param int $kind The kind of span to create. Defaults to SpanKind::KIND_INTERNAL
-     * @param iterable $attributes Attributes to add to the span. Defaults to an empty array, but can be any iterable.
+     * @param  string  $name The name of the span
+     * @param  callable  $callable A callable that will be executed within the span context. The activated Span will be passed as the first argument.
+     * @param  int  $kind The kind of span to create. Defaults to SpanKind::KIND_INTERNAL
+     * @param  iterable  $attributes Attributes to add to the span. Defaults to an empty array, but can be any iterable.
      * @return mixed The result of the callable
      *
      * @throws Throwable If the callable throws an exception, it will be rethrown and the span will be ended with the exception recorded.
@@ -43,9 +41,8 @@ if (! function_exists('span')) {
 
 if (! function_exists('span_event')) {
     /**
-     * @param string $name Event name
-     * @param iterable $attributes Event attributes
-     * @return SpanInterface
+     * @param  string  $name Event name
+     * @param  iterable  $attributes Event attributes
      */
     function span_event(string $name, iterable $attributes = []): SpanInterface
     {
@@ -55,9 +52,8 @@ if (! function_exists('span_event')) {
 
 if (! function_exists('span_attribute')) {
     /**
-     * @param string $name Attribute name
-     * @param mixed $value Attribute value
-     * @return SpanInterface
+     * @param  string  $name Attribute name
+     * @param  mixed  $value Attribute value
      */
     function span_attribute(string $name, mixed $value): SpanInterface
     {
@@ -68,9 +64,6 @@ if (! function_exists('span_attribute')) {
 if (! function_exists('span_error')) {
     /**
      * Set the Span status to Error with an optional description.
-     *
-     * @param string|null $description
-     * @return SpanInterface
      */
     function span_error(string $description = null): SpanInterface
     {
@@ -82,10 +75,6 @@ if (! function_exists('span_error_if')) {
     /**
      * Set the Span status to Error if the condition is true. Otherwise, return
      * the current span.
-     *
-     * @param bool $condition
-     * @param string|null $description
-     * @return SpanInterface
      */
     function span_error_if(bool $condition, string $description = null): SpanInterface
     {
@@ -97,10 +86,6 @@ if (! function_exists('span_error_unless')) {
     /**
      * Set the Span status to Error if the condition is false. Otherwise, return
      * the current span.
-     *
-     * @param bool $condition
-     * @param string|null $description
-     * @return SpanInterface
      */
     function span_error_unless(bool $condition, string $description = null): SpanInterface
     {

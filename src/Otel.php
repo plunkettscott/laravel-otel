@@ -3,15 +3,12 @@
 namespace PlunkettScott\LaravelOpenTelemetry;
 
 use Illuminate\Foundation\Application;
-use OpenTelemetry\API\Trace\NoopSpanBuilder;
 use OpenTelemetry\API\Trace\NoopTracer;
-use OpenTelemetry\API\Trace\SpanInterface;
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\API\Trace\TracerInterface;
 use OpenTelemetry\Context\Context;
 use OpenTelemetry\SDK\Trace\TracerProviderInterface;
-use PlunkettScott\LaravelOpenTelemetry\Contracts\NamedSpanManagerContract;
 use Throwable;
 
 class Otel
@@ -19,7 +16,7 @@ class Otel
     use Concerns\RegistersWatchers,
         Concerns\InteractsWithCurrentSpan;
 
-    static public TracerInterface $tracer;
+    public static TracerInterface $tracer;
 
     /**
      * Start OpenTelemetry for Laravel
@@ -80,17 +77,21 @@ class Otel
      * scope. The scope must be detached and the span must be ended manually. Passing the returned array to spanEnd will
      * end the span and detach the scope for you.
      *
-     * @param string $name The name of the span
-     * @param callable|null $callable A callable that will be executed within the span context. The activated Span will be passed as the first argument.
-     * @param int $kind The kind of span to create. Defaults to SpanKind::KIND_INTERNAL
-     * @param iterable $attributes Attributes to add to the span. Defaults to an empty array, but can be any iterable.
+     * @param  string  $name The name of the span
+     * @param  callable|null  $callable A callable that will be executed within the span context. The activated Span will be passed as the first argument.
+     * @param  int  $kind The kind of span to create. Defaults to SpanKind::KIND_INTERNAL
+     * @param  iterable  $attributes Attributes to add to the span. Defaults to an empty array, but can be any iterable.
      * @return mixed The result of the callable
+     *
      * @throws Throwable If the callable throws an exception, it will be rethrown and the span will be ended with the exception recorded.
      */
     public static function span(string $name, callable $callable = null, int $kind = SpanKind::KIND_INTERNAL, iterable $attributes = []): mixed
     {
         if (! config('otel.enabled')) {
-            if (is_null($callable)) return null;
+            if (is_null($callable)) {
+                return null;
+            }
+
             return $callable(CurrentSpan::get());
         }
 

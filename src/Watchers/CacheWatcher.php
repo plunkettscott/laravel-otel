@@ -15,7 +15,7 @@ class CacheWatcher extends Watcher
     public ?string $optionsClass = CacheWatcherOptions::class;
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function register(Application $app): void
     {

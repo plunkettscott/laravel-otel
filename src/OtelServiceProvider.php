@@ -3,11 +3,7 @@
 namespace PlunkettScott\LaravelOpenTelemetry;
 
 use Illuminate\Support\ServiceProvider;
-use OpenTelemetry\API\Trace\TracerInterface;
-use OpenTelemetry\API\Trace\TracerProviderInterface;
 use PlunkettScott\LaravelOpenTelemetry\Console\Commands;
-use PlunkettScott\LaravelOpenTelemetry\Contracts\NamedSpanManagerContract;
-use PlunkettScott\LaravelOpenTelemetry\Support\NamedSpanManager;
 
 class OtelServiceProvider extends ServiceProvider
 {
