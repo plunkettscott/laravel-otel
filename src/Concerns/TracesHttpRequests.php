@@ -71,6 +71,10 @@ trait TracesHttpRequests
 
     public function terminateRootSpan(Request $request, mixed $response): void
     {
+        if (! isset($this->span)) {
+            return;
+        }
+
         if (method_exists($response, 'getStatusCode')) {
             $this->span->setAttribute(TraceAttributes::HTTP_STATUS_CODE, $response->getStatusCode());
         }
@@ -82,7 +86,10 @@ trait TracesHttpRequests
         }
 
         $this->span->end();
-        $this->scope->detach();
+
+        if (isset($this->scope)) {
+            $this->scope->detach();
+        }
     }
 
     private function calculateSpanName(Request $request): string
