@@ -2,9 +2,11 @@
 
 namespace PlunkettScott\LaravelOpenTelemetry\Concerns;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use OpenTelemetry\API\Trace\Propagation\TraceContextPropagator;
 use OpenTelemetry\API\Trace\SpanInterface;
 use OpenTelemetry\API\Trace\SpanKind;
@@ -70,14 +72,17 @@ trait TracesHttpRequests
         $this->scope = $this->span->activate();
     }
 
-    public function terminateRootSpan(Request $request, Response $response): void
+    public function terminateRootSpan(Request $request, mixed $response): void
     {
-        $this->span->setAttributes([
-            TraceAttributes::HTTP_STATUS_CODE => $response->getStatusCode(),
-            TraceAttributes::HTTP_RESPONSE_CONTENT_LENGTH => $response->headers->get('Content-Length'),
-            'http.response_content_type' => $response->headers->get('Content-Type'),
-            'http.response_content_encoding' => $response->headers->get('Content-Encoding'),
-        ]);
+        if (method_exists($response, 'getStatusCode')) {
+            $this->span->setAttribute(TraceAttributes::HTTP_STATUS_CODE, $response->getStatusCode());
+        }
+
+        if (property_exists($response, 'headers')) {
+            $this->span->setAttribute(TraceAttributes::HTTP_RESPONSE_CONTENT_LENGTH, $response->headers->get('Content-Length'));
+            $this->span->setAttribute('http.response_content_type', $response->headers->get('Content-Type'));
+            $this->span->setAttribute('http.response_content_encoding', $response->headers->get('Content-Encoding'));
+        }
 
         $this->span->end();
         $this->scope->detach();
