@@ -4,10 +4,7 @@ namespace PlunkettScott\LaravelOpenTelemetry\Http\Middleware;
 
 use Closure;
 use Exception;
-use Illuminate\Contracts\View\View;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use OpenTelemetry\API\Trace\TracerInterface;
 use OpenTelemetry\SDK\Trace\TracerProviderInterface;
 use PlunkettScott\LaravelOpenTelemetry\Concerns;
