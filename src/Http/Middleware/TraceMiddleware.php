@@ -5,7 +5,6 @@ namespace PlunkettScott\LaravelOpenTelemetry\Http\Middleware;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use OpenTelemetry\API\Trace\TracerInterface;
 use OpenTelemetry\SDK\Trace\TracerProviderInterface;
 use PlunkettScott\LaravelOpenTelemetry\Concerns;
@@ -51,7 +50,7 @@ class TraceMiddleware
         return $response;
     }
 
-    public function terminate(Request $request, Response $response): void
+    public function terminate(Request $request, mixed $response): void
     {
         $this->terminateRootSpan($request, $response);
     }
