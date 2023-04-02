@@ -40,8 +40,6 @@ class RequestWatcher extends Watcher
             return new TraceMiddleware($app->get(TracerProviderInterface::class), $requestWatcherOptions);
         });
 
-        foreach ($this->option('middleware_groups', []) as $group) {
-            $httpKernel->appendMiddlewareToGroup($group, TraceMiddleware::class);
-        }
+        $httpKernel->prependMiddleware(TraceMiddleware::class);
     }
 }
