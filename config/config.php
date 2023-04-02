@@ -2,6 +2,7 @@
 
 use PlunkettScott\LaravelOpenTelemetry\Enums;
 use PlunkettScott\LaravelOpenTelemetry\Watchers;
+use PlunkettScott\LaravelOpenTelemetry\Resolvers;
 
 return [
 
@@ -72,10 +73,8 @@ return [
             'enabled' => env('OTEL_WATCHER_REQUEST_ENABLED', true),
             'options' => (new Watchers\RequestWatcherOptions(
                 continue_trace: env('OTEL_WATCHER_REQUEST_CONTINUE_TRACE', true),
-                middleware_groups: [
-                    'web',
-                    'api',
-                ],
+                record_route: true,
+                record_user: true,
             ))->toArray(),
         ],
 
@@ -97,6 +96,28 @@ return [
                 ignored: [],
             ))->toArray(),
         ],
+
+        Watchers\EventWatcher::class => [
+            'enabled' => env('OTEL_WATCHER_EVENT_ENABLED', true),
+            'options' => (new Watchers\EventWatcherOptions(
+                ignored: [],
+            ))->toArray(),
+        ],
+
+        Watchers\QueueWatcher::class => [
+            'enabled' => env('OTEL_WATCHER_QUEUE_ENABLED', true),
+            'options' => (new Watchers\QueueWatcherOptions(
+                trace_by_default: true,
+                ignored: [],
+            ))->toArray(),
+        ],
+
+        Watchers\ScheduleWatcher::class => [
+            'enabled' => env('OTEL_WATCHER_SCHEDULE_ENABLED', true),
+            'options' => (new Watchers\ScheduleWatcherOptions(
+                record_output: false,
+            ))->toArray(),
+        ],
     ],
 
     /*
@@ -115,5 +136,20 @@ return [
         'fields' => [
             Enums\LogContextFields::TRACE_ID => 'trace_id',
         ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | OpenTelemetry Attribute Resolvers
+    |--------------------------------------------------------------------------
+    |
+    | The following array lists the resolver implementations used to resolve
+    | various attributes for spans. You are free to customize the default
+    | list of resolvers to suit your instrumentation needs.
+    |
+    */
+
+    'resolvers' => [
+        'user' => Resolvers\DefaultUserResolver::class,
     ],
 ];

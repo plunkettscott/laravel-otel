@@ -57,9 +57,9 @@ class QueryWatcher extends Watcher
         $span->end($nowInNs);
     }
 
-    private function calculateQueryStartTime(int $nowInNs, int $queryTimeMs): int
+    private function calculateQueryStartTime(float $nowInNs, float $queryTimeMs): int
     {
-        return intval($nowInNs - ($queryTimeMs * 1000000));
+        return intval($nowInNs - ($queryTimeMs * 1000000), 10);
     }
 
     private function shouldRecordStatement(string $statement): bool

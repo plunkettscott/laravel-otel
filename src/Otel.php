@@ -9,6 +9,7 @@ use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\API\Trace\TracerInterface;
 use OpenTelemetry\Context\Context;
 use OpenTelemetry\SDK\Trace\TracerProviderInterface;
+use PlunkettScott\LaravelOpenTelemetry\Resolvers\Contracts\UserResolver;
 use Throwable;
 
 class Otel
@@ -29,6 +30,10 @@ class Otel
 
         if (! $app->bound(TracerProviderInterface::class)) {
             return;
+        }
+
+        if (! $app->bound(UserResolver::class)) {
+            $app->bind(UserResolver::class, config('otel.resolvers.user', Resolvers\DefaultUserResolver::class));
         }
 
         static::$tracer = $app->make(TracerProviderInterface::class)
@@ -61,11 +66,11 @@ class Otel
      */
     public static function tracer(): TracerInterface
     {
-        if (is_null(static::$tracer)) {
-            return NoopTracer::getInstance();
+        if (isset(static::$tracer)) {
+            return static::$tracer;
         }
 
-        return static::$tracer;
+        return NoopTracer::getInstance();
     }
 
     /**
