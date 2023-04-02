@@ -1,6 +1,8 @@
 parameters:
-  paths:
-    - config
-    - src
-
-  level: 0
+    level: 0
+    paths:
+        - config
+        - src
+        - tests
+    ignoreErrors:
+        - '#^Undefined variable: \$this$#'
