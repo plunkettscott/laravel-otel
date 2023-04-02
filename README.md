@@ -23,11 +23,14 @@ This package is currently in development and contains the following Watchers:
 - [x] HTTP Client Requests
 - [x] Database Queries
 - [x] Redis Commands
-- [ ] Queue Jobs
+- [x] Queued Jobs
+- [x] Events
+- [x] Event Listeners
 - [x] Cache Commands
-- [ ] View Rendering
+- [ ] View Rendering (Exploring Capabilities)
 - [x] Exceptions
 - [x] Log Messages
+- [x] Scheduled Tasks
 
 ## Requirements
 

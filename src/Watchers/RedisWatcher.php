@@ -64,9 +64,9 @@ class RedisWatcher extends Watcher
         $span->end($nowInNs);
     }
 
-    protected function calculateQueryStartTime(int $nowInNs, int $queryTimeMs): int
+    private function calculateQueryStartTime(float $nowInNs, float $queryTimeMs): int
     {
-        return $nowInNs - ($queryTimeMs * 1000000);
+        return intval($nowInNs - ($queryTimeMs * 1000000), 10);
     }
 
     private function shouldIgnore(CommandExecuted $command): bool

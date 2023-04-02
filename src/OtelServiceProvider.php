@@ -10,12 +10,16 @@ class OtelServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         $this->registerCommands();
         $this->registerPublishing();
 
         if (! config('otel.enabled')) {
+            return;
+        }
+
+        if ($this->app->runningUnitTests()) {
             return;
         }
 

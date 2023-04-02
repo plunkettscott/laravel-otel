@@ -1,78 +1,45 @@
 <?php
 
-namespace PlunkettScott\LaravelOpenTelemetry\Tests\Watchers;
-
-use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Mockery;
 use OpenTelemetry\API\Trace\SpanInterface;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use PlunkettScott\LaravelOpenTelemetry\CurrentSpan;
-use PlunkettScott\LaravelOpenTelemetry\Tests\FeatureTestCase;
+use PlunkettScott\LaravelOpenTelemetry\Otel;
+use PlunkettScott\LaravelOpenTelemetry\Tests\Support\Exceptions\TestException;
+use PlunkettScott\LaravelOpenTelemetry\Tests\Support\Exceptions\TestIgnoredException;
+use PlunkettScott\LaravelOpenTelemetry\Tests\Support\FakeSpan;
+use PlunkettScott\LaravelOpenTelemetry\Tests\TestCase;
 use PlunkettScott\LaravelOpenTelemetry\Watchers\ExceptionWatcher;
 
-class ExceptionWatcherTest extends FeatureTestCase
-{
-    protected function getEnvironmentSetUp($app): void
-    {
-        parent::getEnvironmentSetUp($app);
+beforeEach(function () {
+    $this->enableWatcher(ExceptionWatcher::class, [
+        'ignored' => [
+            TestIgnoredException::class,
+        ],
+    ]);
+});
 
-        $app->get('config')->set('logging.default', 'syslog');
-        $app->get('config')->set('otel.watchers', [
-            ExceptionWatcher::class => [
-                'enabled' => true,
-                'options' => [
-                    'ignored' => [
-                        TestIgnoredException::class,
-                    ],
-                ],
-            ],
-        ]);
-    }
+it('adds span events', function () {
+    $fake = $this->withFakeSpan();
 
-    public function test_exception_watcher_adds_span_event()
-    {
-        $exception = new TestException('Test Exception');
+    $exception = new TestException('Test Exception');
+    $handler = app(ExceptionHandler::class);
+    $handler->report($exception);
 
-        CurrentSpan::$currentSpan = Mockery::mock(SpanInterface::class)
-            ->shouldReceive('addEvent')
-            ->withArgs(['Exception', [
-                'class' => TestException::class,
-                'file' => __FILE__,
-                'line' => $exception->getLine(),
-                'message' => $exception->getMessage(),
-            ]])
-            ->once()
-            ->andReturn(Mockery::self())
-            ->shouldReceive('setStatus')
-            ->withArgs([
-                'Error',
-                $exception->getMessage(),
-            ])
-            ->once()
-            ->andReturn(Mockery::self())
-            ->getMock();
+    $fake->assertStatus('Error', $exception->getMessage());
+    $fake->assertEventExists('Exception', [
+        'class' => TestException::class,
+        'file' => __FILE__,
+        'line' => $exception->getLine(),
+        'message' => $exception->getMessage(),
+    ]);
+});
 
-        $handler = $this->app->get(ExceptionHandler::class);
-        $handler->report($exception);
-    }
+it('ignores ignored exceptions', function () {
+    $fake = $this->withFakeSpan();
 
-    public function test_exception_watcher_ignores_ignored_exceptions()
-    {
-        $exception = new TestIgnoredException('Test Exception');
+    $exception = new TestIgnoredException('Test Ignored Exception');
+    $handler = $this->app->get(ExceptionHandler::class);
+    $handler->report($exception);
 
-        CurrentSpan::$currentSpan = Mockery::mock(SpanInterface::class)
-            ->shouldNotReceive('addEvent', 'setStatus')
-            ->getMock();
-
-        $handler = $this->app->get(ExceptionHandler::class);
-        $handler->report($exception);
-    }
-}
-
-class TestException extends Exception
-{
-}
-
-class TestIgnoredException extends Exception
-{
-}
+    $fake->assertEventMissing('Exception');
+});

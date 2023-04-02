@@ -64,10 +64,13 @@ class LogWatcher extends Watcher
     private function shouldIgnore(MessageLogged $event): bool
     {
         if (self::PRIORITIES[$event->level] < self::PRIORITIES[$this->option('min_level', LogLevel::ERROR)]) {
+            // Don't log events below the minimum level defined in the options.
             return true;
         }
 
         if (isset($event->context['exception']) && $event->context['exception'] instanceof Throwable) {
+            // Don't log exception logs as events, they are already logged as events
+            // by the ExceptionWatcher.
             return true;
         }
 

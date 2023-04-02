@@ -5,15 +5,14 @@ namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 final readonly class RequestWatcherOptions extends WatcherOptions
 {
     /**
-     * @param  bool  $continue_trace Whether to continue the trace if a trace header is present in the request. If false, a new trace will be started for each request, even if the request is part of a trace.
-     * @param  array  $middleware_groups An array of middleware groups to automatically trace. If a request is made that is part of a middleware group in this array, a span will be created.
+     * @param bool $continue_trace Whether to continue the trace if a trace header is present in the request. If false, a new trace will be started for each request, even if the request is part of a trace.
+     * @param bool $record_route Whether to record the route in the span attributes.
+     * @param bool $record_user Whether to record the authenticated User in the span attributes. If true, the user's ID will be recorded in the span attributes, and any attributes specified in $record_user_attributes will also be recorded.
      */
     public function __construct(
         public bool $continue_trace = true,
-        public array $middleware_groups = [
-            'web',
-            'api',
-        ],
+        public bool $record_route = true,
+        public bool $record_user = true,
     ) {
     }
 
@@ -21,10 +20,8 @@ final readonly class RequestWatcherOptions extends WatcherOptions
     {
         return new self(
             $options['continue_trace'] ?? true,
-            $options['middleware_groups'] ?? [
-                'web',
-                'api',
-            ],
+            $options['record_route'] ?? true,
+            $options['record_user'] ?? true,
         );
     }
 }
