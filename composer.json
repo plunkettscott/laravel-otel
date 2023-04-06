@@ -27,7 +27,7 @@
     "require-dev": {
         "guzzlehttp/guzzle": "^7.5",
         "laravel/pint": "^1.6",
-        "orchestra/testbench": "^8.0",
+        "orchestra/testbench": "^7.0|^8.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-mock": "^2.0",
         "phpstan/phpstan": "^1.10",
