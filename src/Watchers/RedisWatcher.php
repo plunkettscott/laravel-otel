@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use OpenTelemetry\API\Trace\SpanKind;
 use OpenTelemetry\SDK\Common\Time\ClockFactory;
 use OpenTelemetry\SemConv\TraceAttributes;
-use OpenTelemetry\SemConv\TraceAttributeValues;
 use PlunkettScott\LaravelOpenTelemetry\CurrentSpan;
 
 class RedisWatcher extends Watcher
@@ -54,7 +53,7 @@ class RedisWatcher extends Watcher
             ->setStartTimestamp($this->calculateQueryStartTime($nowInNs, $command->time))
             ->startSpan();
 
-        $span->setAttribute(TraceAttributes::DB_SYSTEM, TraceAttributeValues::DB_SYSTEM_REDIS);
+        $span->setAttribute(TraceAttributes::DB_SYSTEM, 'redis');
         $span->setAttribute(TraceAttributes::DB_REDIS_DATABASE_INDEX, $command->connectionName);
 
         if ($recordCommand) {
