@@ -55,10 +55,9 @@ class OtelApplicationServiceProvider extends ServiceProvider
             function () {
                 $tracerProvider = TracerProvider::builder()
                     ->setSampler(sampler: $this->sampler())
-                    ->setResource(ResourceInfoFactory::merge(
-                        $this->resourceInfo(),
-                        ResourceInfoFactory::defaultResource(),
-                    ));
+                    ->setResource(
+                        ResourceInfoFactory::defaultResource()->merge($this->resourceInfo())
+                    );
 
                 foreach ($this->spanProcessors() as $spanProcessor) {
                     $tracerProvider->addSpanProcessor($spanProcessor);
