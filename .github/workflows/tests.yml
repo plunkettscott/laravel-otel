@@ -4,10 +4,7 @@ on:
   push:
     branches:
       - main
-  pull_request:
-  schedule:
-    - cron: '0 0 * * *'
-
+  pull_request: {}
 jobs:
   tests:
     runs-on: ubuntu-22.04
@@ -22,14 +19,20 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [8.2]
-        laravel: [10]
+        php: [8.2, 8.3]
+        laravel: [10, 11]
+        include:
+          - laravel: 10
+            testbench: 8
+          - laravel: 11
+            testbench: 9
+          
 
-    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }}
+    name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - Testbench ${{ matrix.testbench }}
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -42,7 +45,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "illuminate/contracts=^${{ matrix.laravel }}" --dev --no-update
+          composer require "orchestra/testbench=^${{ matrix.testbench }}" "laravel/framework=^${{ matrix.laravel }}" --dev --no-update
           composer update --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
