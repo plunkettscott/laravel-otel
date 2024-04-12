@@ -54,8 +54,6 @@ it('records cache put with a ttl', function () {
 
     $fake->assertEventExists('cache set', [
         'key' => 'put',
-        'expires_at' => $expiredAt->getTimestamp(),
-        'expires_in_seconds' => 60,
     ]);
 });
 

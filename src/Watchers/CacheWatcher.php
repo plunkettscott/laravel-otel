@@ -59,7 +59,7 @@ class CacheWatcher extends Watcher
         $ttl = property_exists($event, 'minutes')
             ? $event->minutes * 60
             : $event->seconds;
-
+            
         $this->addEvent('cache set', [
             'key' => $event->key,
             'tags' => json_encode($event->tags),
