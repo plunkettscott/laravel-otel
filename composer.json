@@ -22,7 +22,7 @@
         "open-telemetry/api": "^1.0@beta",
         "open-telemetry/sdk": "^1.0@beta",
         "php-http/message-factory": "^1.0",
-        "symfony/http-client": "^6.2"
+        "symfony/http-client": "^6.2 || ^7.0"
     },
     "require-dev": {
         "guzzlehttp/guzzle": "^7.5",
