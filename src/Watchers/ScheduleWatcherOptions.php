@@ -2,13 +2,13 @@
 
 namespace PlunkettScott\LaravelOpenTelemetry\Watchers;
 
-readonly class ScheduleWatcherOptions extends WatcherOptions
+final readonly class ScheduleWatcherOptions extends WatcherOptions
 {
     /**
      * @param bool $record_output When true, the output of the command will be recorded as an event on the span. This can be useful for debugging, but can be a risk if the output contains sensitive information.
      */
     public function __construct(
-        bool $record_output = false,
+        public bool $record_output = false,
     ) {
     }
 
